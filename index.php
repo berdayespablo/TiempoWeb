@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplicación del Tiempo</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="assets\css\styles.css">
 </head>
 <body>    
 <header>
     <div class="cabecera">
         <h1>WeatherWatch</h1>
-        <img src="imgs/iconosol.jpg" alt="Icono sol">
+        <img src="assets\img\iconosol.jpg" alt="Icono sol">
     </div>
 </header>
 
@@ -20,13 +20,13 @@
             <h2>¿Qué tiempo hace en...?</h2>
             <form id="formulario" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="GET">
                 <input type="text" id="location-input" name="location" placeholder="Ej. Madrid" required>
-                <button type="submit"><img id="search-icon" src="imgs/lupa.png" alt="Buscar"></button>
+                <button type="submit"><img id="search-icon" src="assets\img\lupa.png" alt="Buscar"></button>
             </form>
             <div class="dropdown">
             <button class="dropdown-button">&#9776;</button>
                 <div class="dropdown-content">
-                <a href="mapa_lluvias.html">Mapa de lluvias</a>
-                <a href="mapa_temperatura.html">Mapa de temperatura</a>
+                <a href="html\mapa_lluvias.html">Mapa de lluvias</a>
+                <a href="html\mapa_temperatura.html">Mapa de temperatura</a>
                 </div>
             </div>
         </section>

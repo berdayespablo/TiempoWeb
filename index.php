@@ -47,19 +47,23 @@
             // Obtener datos meteorológicos
             $weatherData = $weatherAPI->getWeatherData($location);
 
-            // Obtener datos de contaminación del aire si es posible
-            if (isset($weatherData['coord']['lat']) && isset($weatherData['coord']['lon'])) {
-                $airPollutionData = $weatherAPI->getAirPollutionData($weatherData['coord']['lat'], $weatherData['coord']['lon']);
+            // Obtener la latitud y longitud si están disponibles
+            $latitude = $weatherAPI->getLatitude($weatherData);
+            $longitude = $weatherAPI->getLongitude($weatherData);
+
+            // Obtener datos de contaminación del aire si la latitud y longitud están disponibles
+            if ($latitude !== null && $longitude !== null) {
+                $airPollutionData = $weatherAPI->getAirPollutionData($latitude, $longitude);
             }
 
             // Procesar datos y generar recomendaciones
-            $temperatura = $weatherData['main']['temp'];
-            $descripcion = $weatherData['weather'][0]['description'];
-            $humedad = $weatherData['main']['humidity'];
-            $velocidadViento = $weatherData['wind']['speed'];
+            $temperatura = $weatherAPI->getTemperature($weatherData);
+            $descripcion = $weatherAPI->getWeatherDescription($weatherData);
+            $humedad = $weatherAPI->getHumidity($weatherData);
+            $velocidadViento = $weatherAPI->getWindSpeed($weatherData);
 
             // Obtener la calidad del aire
-            $calidadAire = $airPollutionData['list'][0]['main']['aqi'];
+            $calidadAire = $weatherAPI-> getAirPollution($airPollutionData);
             $mensajeCalidadAire = determinarMensajeCalidadAire($calidadAire);
 
             // Determinar las recomendaciones de temperatura

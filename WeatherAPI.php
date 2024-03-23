@@ -36,5 +36,39 @@ class WeatherAPI {
 
         return $airPollutionData;
     }
+
+    /* 
+        Aquí uso operadores ternarios. Es como un if, pero en 1 sola línea. 
+        Se usan así:
+            <condicion> ? <valor para true> : <valor para false>
+    */
+    public function getLatitude($weatherData) {
+        return isset($weatherData['coord']['lat']) ? $weatherData['coord']['lat'] : null;
+    }
+
+    public function getLongitude($weatherData) {
+        return isset($weatherData['coord']['lon']) ? $weatherData['coord']['lon'] : null;
+    }
+
+    public function getTemperature($weatherData) {
+        return isset($weatherData['main']['temp']) ? $weatherData['main']['temp'] : null;
+    }
+
+    public function getWeatherDescription($weatherData) {
+        return isset($weatherData['weather'][0]['description']) ? $weatherData['weather'][0]['description'] : null;
+    }
+
+    public function getHumidity($weatherData) {
+        return isset($weatherData['main']['humidity']) ? $weatherData['main']['humidity'] : null;
+    }
+
+    public function getWindSpeed($weatherData) {
+        return isset($weatherData['wind']['speed']) ? $weatherData['wind']['speed'] : null;
+    }
+
+    public function getAirPollution($airPollutionData) {
+        return isset($airPollutionData['list'][0]['main']['aqi']) ? $airPollutionData['list'][0]['main']['aqi'] : null;
+    }
+
 }
 ?>

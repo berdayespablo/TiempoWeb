@@ -33,7 +33,8 @@
         <section>
     <div id="weather-info">
     <?php
-    require_once 'WeatherAPI.php'; // Incluir la clase WeatherAPI
+    require_once 'WeatherAPI.php';
+    require_once 'utils.php';
 
     // Verificar si se ha enviado una solicitud y se ha recibido una respuesta
     if (isset($_GET['location'])) {
@@ -59,45 +60,10 @@
 
             // Obtener la calidad del aire
             $calidadAire = $airPollutionData['list'][0]['main']['aqi'];
-            switch ($calidadAire) {
-                case 1:
-                    $mensajeCalidadAire = 'Buena calidad del aire.';
-                    break;
-                case 2:
-                    $mensajeCalidadAire = 'Calidad del aire regular.';
-                    break;
-                case 3:
-                    $mensajeCalidadAire = 'Calidad del aire moderada.';
-                    break;
-                case 4:
-                    $mensajeCalidadAire = 'Calidad del aire deficiente.';
-                    break;
-                case 5:
-                    $mensajeCalidadAire = 'Calidad del aire muy deficiente.';
-                    break;
-            }
+            $mensajeCalidadAire = determinarMensajeCalidadAire($calidadAire);
 
-            // Definir recomendaciones de temperatura
-            $recomendaciones = '';
-            if ($temperatura < 10) {
-                $recomendaciones .= 'Hace frío. Recomiendo abrigarse bien.';
-            } elseif ($temperatura >= 10 && $temperatura < 15) {
-                $recomendaciones .= 'El clima es fresco, considera llevar una chaqueta.';
-            } elseif ($temperatura >= 15 && $temperatura < 20) {
-                $recomendaciones .= 'La temperatura es fresca. Un suéter ligero puede ser suficiente.';
-            } elseif ($temperatura >= 20 && $temperatura < 25) {
-                $recomendaciones .= 'El clima es agradable. Disfruta del día al aire libre.';
-            } elseif ($temperatura >= 25) {
-                $recomendaciones .= 'Hace calor. Mantente hidratado y busca lugares frescos.';
-            }
-
-            // Definir recomendaciones basadas en la descripción del clima
-            if (strpos(strtolower($descripcion), 'cielo claro') !== false) {
-                $recomendaciones .= ' No olvides aplicar protector solar.';
-            } 
-            if (strpos(strtolower($descripcion), 'lluvia') !== false) {
-                $recomendaciones .= ' Se pronostica lluvia, asegúrate de llevar un paraguas.';
-            }                     
+            // Determinar las recomendaciones de temperatura
+            $recomendaciones = determinarRecomendacionesTemperatura($temperatura, $descripcion);               
 
             // Imprimir la información del tiempo por pantalla
             echo "<p><span style='font-size: 20px;'>Informe del tiempo:</span></p>";        
@@ -108,7 +74,6 @@
             echo "<p class='recomendaciones'><strong><span style='font-size: 16px; color: #21A5B0'>Recomendaciones:</strong></span> $recomendaciones</p>";
             echo "<p class='calidad-aire'><strong><span style='font-size: 16px; color: #21A5B0'>Calidad del aire:</strong></span> $mensajeCalidadAire</p>"; 
         } catch (Exception $e) {
-            // Manejar la excepción
             echo "Error: " . $e->getMessage();
         }
     }

@@ -1,5 +1,5 @@
 <?php
- function determinarMensajeCalidadAire($calidadAire) {
+function determinarMensajeCalidadAire($calidadAire) {
     $mensajes = [
         1 => 'Buena calidad del aire.',
         2 => 'Calidad del aire regular.',
@@ -10,6 +10,7 @@
 
     return isset($mensajes[$calidadAire]) ? $mensajes[$calidadAire] : 'No se pudo determinar la calidad del aire.';
 }
+
 function determinarRecomendacionesTemperatura($temperatura, $descripcion) {
     $recomendaciones_temperatura = [
         10 => 'Hace frío. Recomiendo abrigarse bien.',
@@ -37,4 +38,9 @@ function determinarRecomendacionesTemperatura($temperatura, $descripcion) {
 
     return $recomendaciones;
 }
+
+function verificarNull($valor, $unidad = '') {
+    return $valor !== null ? $valor . $unidad : "No disponible";
+}
+
 ?>

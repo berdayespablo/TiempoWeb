@@ -47,36 +47,32 @@
             // Obtener datos meteorológicos
             $weatherData = $weatherAPI->getWeatherData($location);
 
-            // Obtener la latitud y longitud si están disponibles
+            // Obtener datos si están disponibles
             $latitude = $weatherAPI->getLatitude($weatherData);
             $longitude = $weatherAPI->getLongitude($weatherData);
-
-            // Obtener datos de contaminación del aire si la latitud y longitud están disponibles
-            if ($latitude !== null && $longitude !== null) {
-                $airPollutionData = $weatherAPI->getAirPollutionData($latitude, $longitude);
-            }
-
-            // Procesar datos y generar recomendaciones
             $temperatura = $weatherAPI->getTemperature($weatherData);
             $descripcion = $weatherAPI->getWeatherDescription($weatherData);
             $humedad = $weatherAPI->getHumidity($weatherData);
             $velocidadViento = $weatherAPI->getWindSpeed($weatherData);
 
-            // Obtener la calidad del aire
-            $calidadAire = $weatherAPI-> getAirPollution($airPollutionData);
-            $mensajeCalidadAire = determinarMensajeCalidadAire($calidadAire);
+           // Obtener datos de contaminación del aire si la latitud y longitud están disponibles
+           $airPollutionData = ($latitude !== null && $longitude !== null) ? $weatherAPI->getAirPollutionData($latitude, $longitude) : null;
+            
+           // Obtener la calidad del aire
+           $calidadAire = isset($airPollutionData) ? $weatherAPI-> getAirPollution($airPollutionData) : null;
+           $mensajeCalidadAire = isset($calidadAire) ? determinarMensajeCalidadAire($calidadAire) : null;
 
-            // Determinar las recomendaciones de temperatura
-            $recomendaciones = determinarRecomendacionesTemperatura($temperatura, $descripcion);               
+           // Determinar las recomendaciones de temperatura
+           $recomendaciones = isset($temperatura) && isset($descripcion) ? determinarRecomendacionesTemperatura($temperatura, $descripcion) : null;                
 
-            // Imprimir la información del tiempo por pantalla
-            echo "<p><span style='font-size: 20px;'>Informe del tiempo:</span></p>";        
-            echo "<p><strong><span style='font-size: 16px;'>Temperatura:</strong> $temperatura °C</span></p>";
-            echo "<p><strong><span style='font-size: 16px;'>Descripción:</strong> $descripcion</span></p>";
-            echo "<p><strong><span style='font-size: 16px;'>Humedad:</strong> $humedad%</span></p>";
-            echo "<p><strong><span style='font-size: 16px;'>Velocidad del viento:</strong> $velocidadViento m/s</span></p>";
-            echo "<p class='recomendaciones'><strong><span style='font-size: 16px; color: #21A5B0'>Recomendaciones:</strong></span> $recomendaciones</p>";
-            echo "<p class='calidad-aire'><strong><span style='font-size: 16px; color: #21A5B0'>Calidad del aire:</strong></span> $mensajeCalidadAire</p>"; 
+           // Imprimir la información del tiempo por pantalla
+           echo "<p><span style='font-size: 20px;'>Informe del tiempo:</span></p>";        
+           echo "<p><strong><span style='font-size: 16px;'>Temperatura:</strong> " . verificarNull($temperatura, " °C") . "</span></p>";
+           echo "<p><strong><span style='font-size: 16px;'>Descripción:</strong> " . verificarNull($descripcion) . "</span></p>";
+           echo "<p><strong><span style='font-size: 16px;'>Humedad:</strong> " . verificarNull($humedad, "%") . "</span></p>";
+           echo "<p><strong><span style='font-size: 16px;'>Velocidad del viento:</strong> " . verificarNull($velocidadViento, " m/s") . "</span></p>";
+           echo "<p class='recomendaciones'><strong><span style='font-size: 16px; color: #21A5B0'>Recomendaciones:</strong></span> " . verificarNull($recomendaciones) . "</p>";
+           echo "<p class='calidad-aire'><strong><span style='font-size: 16px; color: #21A5B0'>Calidad del aire:</strong></span> " . verificarNull($mensajeCalidadAire) . "</p>"; 
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
